@@ -1,48 +1,34 @@
-const { json } = require('express');
-const fs = require('fs/promises');
-const path = require('path')
-const { nanoid } = require('nanoid');
-const { log } = require('console');
+const Contact = require('./contact');
 
-const contactsPath = path.join(__dirname, 'contacts.json');
 
 const listContacts = async () => {
-  const buffer = await fs.readFile(contactsPath, 'utf-8');
-  const contacts = await JSON.parse(buffer);
-  return contacts;
+  const result = await Contact.find();
+  return result;
 }
 
 const getContactById = async (id) => {
-  const contacts = await listContacts();
-  return contacts.find(item => item.id === id);
-}
+  const result = await Contact.findById(id);
+  return result;
+  }
 
 const removeContact = async (id) => {
-  const contacts = await listContacts();
-  const index = contacts.findIndex(item => item.id === id);
-  if (index === -1) return;
-  const [deletedContact] = contacts.splice(index, 1);
-  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-  return deletedContact;
-
-}
+  const result = Contact.findByIdAndDelete(id);
+    return result;
+  }
 
 const addContact = async (body) => {
-  const contacts = await listContacts();
-  const newContact = { id: nanoid(), ...body };
-  const newList = [...contacts, newContact];
-  await fs.writeFile(contactsPath, JSON.stringify(newList, null, 2));
-  return newContact;
-}
+  const result = await Contact.create(body);
+    return result;
+  }
 
 const updateContact = async (id, body) => {
-  const contacts = await listContacts();
-	const index = contacts.findIndex((item) => item.id === id);
-  if (index === -1) return;
-  const updatedContact = { id, ...body };
-  contacts.splice(index, 1, updatedContact);
-  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-  return updatedContact;
+  const result = await Contact.findByIdAndUpdate(id, body, {new: true});
+  return result;
+}
+
+const updateStatusContact = async (id, body) => {
+  const result = await Contact.findByIdAndUpdate(id, body, {new: true});
+  return result;
 }
 
 module.exports = {
@@ -51,4 +37,5 @@ module.exports = {
   removeContact,
   addContact,
   updateContact,
+  updateStatusContact,
 }
