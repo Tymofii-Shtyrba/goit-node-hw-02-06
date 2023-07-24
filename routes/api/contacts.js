@@ -1,8 +1,8 @@
 const express = require('express');
 const operations = require('../../models/contacts');
-const { bodySchema, favoriteShcema } = require('../../validator');
+const { bodySchema, favoriteShcema } = require('../../joiSchemes/contactBodyScheme');
 const router = express.Router();
-const isValidId = require('../../idvalidator');
+const isValidId = require('../../midlwares/idvalidator');
 
 router.get('/', async (req, res, next) => {
 	try {
@@ -31,7 +31,7 @@ router.post('/', async (req, res, next) => {
 		const { error } = await bodySchema.validate(req.body);
 
 		if (error) {
-			throw { status: 400, message: 'missing required name field' };
+			throw { status: 400, message: 'missing required field' };
 		}
 		const contact = await operations.addContact(req.body);
 		res.status(201).json(contact);
