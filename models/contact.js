@@ -19,7 +19,7 @@ const contactSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'user',
 	},
-});
+}, { versionKey: false, timestamps: true });
 
 contactSchema.post('save', (error, data, next) => {
 	error.status = 400;
