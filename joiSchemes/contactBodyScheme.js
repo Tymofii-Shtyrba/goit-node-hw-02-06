@@ -6,12 +6,7 @@ const bodySchema = new Joi.object({
   phone: Joi.string().required(),
 });
 
-const favoriteShcema = new Joi.object({
-  favorite: Joi.boolean().required(),
-});
-
 module.exports = {
   bodySchema,
-  favoriteShcema,
 }
 

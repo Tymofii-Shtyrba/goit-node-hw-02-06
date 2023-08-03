@@ -1,3 +1,4 @@
+const { number } = require('joi');
 const { Schema, model } = require('mongoose');
 
 const userSchema = new Schema({
@@ -19,6 +20,7 @@ const userSchema = new Schema({
 		type: String,
 		default: null,
 	},
+	avatarURL: String,
 }, {versionKey: false, timestamps: true});
 
 const User = model('user', userSchema);
